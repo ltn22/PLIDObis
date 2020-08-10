@@ -1,2 +1,2 @@
-WIFI_SSID=your key
-WIFI_KEY=your password
+known_nets = {
+    'NET_SSID': {'pwd': 'PASSWORD'} 
