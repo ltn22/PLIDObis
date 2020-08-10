@@ -1,2 +1,3 @@
 known_nets = {
-    'NET_SSID': {'pwd': 'PASSWORD'} 
+    'NET_SSID': {'pwd': 'PASSWORD'}
+}
