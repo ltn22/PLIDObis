@@ -1,3 +1,1 @@
-known_nets = {
-    'NET_SSID': {'pwd': 'PASSWORD'}
-}
+../WiFi/wifi_conf.py
