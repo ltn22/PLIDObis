@@ -3,7 +3,7 @@ import pycom
 import binascii
 #
 lora = LoRa(mode=LoRa.LORAWAN)
-mac = lora.mac()os.fsformat('/flash')
+mac = lora.mac()
 #
 print ('devEUI: ',  binascii.hexlify(mac))
 #
