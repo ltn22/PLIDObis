@@ -57,7 +57,9 @@ logging.getLogger("coap-server").setLevel(logging.DEBUG)
 def main():
     # Resource tree creation
 
-    ip_addr = socket.gethostbyname(socket.gethostname())
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+        s.connect(("8.8.8.8", 80)) # connect outside to get local IP address
+        ip_addr = s.getsockname()[0]
     port = 5683
     print ("server running on ", ip_addr, "at port", port)
 
