@@ -31,7 +31,7 @@ def forward_data(payload):
 
     if verbose:
         print ("--UP->", binascii.hexlify(payload))
-    sock.sendto(payload, ("127.0.0.1", 33033))
+    sock.sendto(payload, ("127.0.0.1", 5683))
 
     readable, writable, exceptional = select.select(inputs, outputs, inputs, 0.1)
 
@@ -95,7 +95,7 @@ def get_from_TTN():
 def get_from_acklio():
 
     fromGW = request.get_json(force=True)
-    print (fromGW)
+
     downlink = None
     if "data" in fromGW:
         payload = base64.b64decode(fromGW["data"])

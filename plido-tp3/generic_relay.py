@@ -95,7 +95,7 @@ def get_from_TTN():
 def get_from_acklio():
 
     fromGW = request.get_json(force=True)
-
+    print (fromGW)
     downlink = None
     if "data" in fromGW:
         payload = base64.b64decode(fromGW["data"])
