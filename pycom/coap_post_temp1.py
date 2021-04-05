@@ -2,7 +2,7 @@ import CoAP
 import socket
 import time
 
-SERVER = "192.168.1.26" # change to your server's IP address
+SERVER = "192.168.1.XX" # change to your server's IP address
 PORT   = 5683
 destination = (SERVER, PORT)
 
