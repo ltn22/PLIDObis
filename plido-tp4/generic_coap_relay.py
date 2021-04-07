@@ -18,6 +18,7 @@ import struct
 import requests
 
 import aiocoap.message
+from aiocoap.numbers import POST, NON
 
 
 
@@ -64,17 +65,30 @@ def get_from_sigfox():
     downlink = None
     if "data" in fromGW:
         payload = binascii.unhexlify(fromGW["data"])
-        print (binascii.hexlify(payload))
-        # Sigfox use SCHC compression, first byte is CoAP compressed header
-        SCHC_byte = struct.unpack('!B', payload[0])
-        payload = payload[1:]
-        print (SCHC_byte, binascii.hexlify(payload))
-    
 
-        downlink = forward_data(payload)
+        # Sigfox use SCHC compression, first byte is CoAP compressed header
+        SCHC_byte = payload[0]
+
+        ruleID = SCHC_byte >> 6
+        mID = (SCHC_byte & 0b00111100) >> 2
+        uri_idx = SCHC_byte & 0b0000_0011
+        
+        m = aiocoap.message.Message(
+            mtype=NON,
+            code=POST,
+            mid=mID,
+            payload=payload[1:]
+            )
+        m.opt.uri_path = (
+            ["temperature", "pressure", "humidity", "memory"][uri_idx],
+        )
+
+        m.opt.content_format = 60
+        m.opt.no_response = 0b0000_0010
+
+        downlink = forward_data(m.encode())
 
     resp = Response(status=200)
-    print (resp)
     return resp                                    
 
 @app.route('/TTN', methods=['POST'])
