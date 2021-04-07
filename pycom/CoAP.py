@@ -3,10 +3,9 @@ import binascii
 import sys
 
 upython = (sys.implementation.name == "micropython")
-print (upython)
 
-
-
+if upython:
+    pass
 ###
 
 type_name = ["CON", "NON", "ACK", "RST"]

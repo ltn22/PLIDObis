@@ -4,6 +4,7 @@ import time
 import sys
 import binascii
 upython = (sys.implementation.name == "micropython")
+print (upython, sys.implementation.name)
 if upython:
     import kpn_senml.cbor_encoder as cbor #pycom
     import pycom
@@ -16,8 +17,8 @@ else:
 #----- CONNECT TO THE APPROPRIATE NETWORK --------
 
 #SERVER = "LORAWAN" # change to your server's IP address, or SIGFOX or LORAWAN
-SERVER="SIGFOX"
-#SERVER = "192.168.1.xxx" # change to your server's IP address, or SIGFOX or LORAWAN
+#SERVER="SIGFOX"
+SERVER = "192.168.1.104" # change to your server's IP address, or SIGFOX or LORAWAN
 PORT   = 5683
 destination = (SERVER, PORT)
 
@@ -86,7 +87,7 @@ if upython: # LOPY
 
 else: # computer
     import virtual_sensor
-    use_BLE = False
+    use_BME = False
 
 print ("use BME", use_BME)
 
