@@ -16,6 +16,10 @@ import base64
 
 import requests
 
+import aiocoap.message
+
+
+
 app = Flask(__name__)
 app.debug = True
 
@@ -59,6 +63,13 @@ def get_from_sigfox():
     downlink = None
     if "data" in fromGW:
         payload = binascii.unhexlify(fromGW["data"])
+        print (binascii.hexlify(payload))
+        # Sigfox use SCHC compression, first byte is CoAP compressed header
+        SCHC_byte = struct.unpack('!B', payload[0])
+        payload = payload[1:]
+        print (SCHC_byte, binascii.hexlify(payload))
+    
+
         downlink = forward_data(payload)
 
     resp = Response(status=200)
