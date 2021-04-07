@@ -13,6 +13,7 @@ import socket
 import select
 import time
 import base64
+import struct
 
 import requests
 
