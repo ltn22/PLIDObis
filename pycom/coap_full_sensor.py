@@ -1,3 +1,23 @@
+"""
+This program runs on Python3 in terminal mode and Lopy4. On LoPy4, it sends
+information either on LoRaWAN Networks, Sigfox or Wi-Fi. Selection is done
+with the variable SERVER (see below). If a BME280 is connected to the LoPY,
+measurement are taken from the sensor, otherwise sensor's behavior is emulated.
+On python terminal values are emulated.
+
+Data are sent with CoAP on 4 different URI /temperature, /pressure, /humidity,
+/memory. On Sigfox, the SCHC compression of the CoAP header is provided and only
+one parameter is sent (it can be changed in the code). On LoRaWAN and Wi-Fi all
+the parameters are sent on a full CoAP message. Downlink is limited to error
+messages (4.xx and 5.xx) and not taken into account by the program.
+
+"""
+#SERVER = "LORAWAN" # change to your server's IP address, or SIGFOX or LORAWAN
+#SERVER="SIGFOX"
+SERVER = "192.168.1.XX" # change to your server's IP address, or SIGFOX or LORAWAN
+PORT   = 5683
+destination = (SERVER, PORT)
+
 import CoAP
 import socket
 import time
@@ -16,11 +36,7 @@ else:
 
 #----- CONNECT TO THE APPROPRIATE NETWORK --------
 
-#SERVER = "LORAWAN" # change to your server's IP address, or SIGFOX or LORAWAN
-#SERVER="SIGFOX"
-SERVER = "192.168.1.104" # change to your server's IP address, or SIGFOX or LORAWAN
-PORT   = 5683
-destination = (SERVER, PORT)
+
 
 sigfox = False
 if SERVER == "LORAWAN":
@@ -50,7 +66,7 @@ if SERVER == "LORAWAN":
     s.setsockopt(socket.SOL_LORA, socket.SO_DR, 5)
     s.setsockopt(socket.SOL_LORA,  socket.SO_CONFIRMED,  False)
 
-    MTU = 200 # Maximun Transmission Unit
+    MTU = 200 # Maximun Transmission Unit, for DR 0 should be set to less than 50
 
 elif SERVER == "SIGFOX":
     from network import Sigfox
@@ -99,6 +115,9 @@ if not use_BME:
 else:
     print ("Send real measurements")
 
+# the following fonction are able to call either the emulator or the BME to return
+# values.
+
 def get_temperature():
     if use_BME:
         return bme.read_temperature()
@@ -127,13 +146,19 @@ def get_memory():
 
 # ------------- SENDING DATA ------------------------
 
-REPORT_PERIOD = 60 # send a frame every 30 sample
+REPORT_PERIOD = 60 # send a frame every 60 sample (1 hour)
+
+# Offset are used to desynchronize sendings, and the value is != form 0
+# at the first round, after the first sending offset is set to 0, but since
+# buffers have different filling level, the desynchronization is kept. In the
+# default configuration, one message is sent every 15 minutes.
+
 temperature_offset = 0
 pressure_offset = REPORT_PERIOD // 4 # desynchronize sending
 humidity_offset = 2*REPORT_PERIOD // 4
 memory_offset = 3*REPORT_PERIOD // 4
 
-print (temperature_offset, pressure_offset, humidity_offset, memory_offset)
+print ("OFFSET", temperature_offset, pressure_offset, humidity_offset, memory_offset)
 
 t_prev = 0
 p_prev = 0
@@ -145,40 +170,39 @@ pres_ts = []
 humi_ts = []
 memo_ts = []
 
-sigfox_MID = 1
+sigfox_MID = 1 # when SCHC is used for Sigfox
 def send_coap_message(sock, destination, uri_path, message):
-    if destination[0] == "SIGFOX":
+    if destination[0] == "SIGFOX": # do SCHC compression
         global sigfox_MID
 
         """ SCHC compression for Sigfox, use rule ID 0 stored on 2 bits,
         followed by MID on 4 bits and 2 bits for an index on Uri-path.
-        """
-        print (uri_path, message)
-        uri_idx = ['temperature', 'pressure', 'humidity', 'memory'].index(uri_path)
-        print (uri_idx)
 
-        schc_residue = 0x00
-        schc_residue |= (sigfox_MID << 2) | uri_idx
+        the SCHC header is RRMMMMUU
+        """
+        uri_idx = ['temperature', 'pressure', 'humidity', 'memory'].index(uri_path)
+
+        schc_residue = 0x00 # ruleID in 2 bits RR
+        schc_residue |= (sigfox_MID << 2) | uri_idx # MMMM and UU
 
         sigfox_MID += 1
-        sigfox_MID &= 0xFF
+        sigfox_MID &= 0x0F # on 4 bits
+        if sigfox_MID == 0: sigfox_MID = 1 # never use MID = 0
 
-        print ("sigfox MID", sigfox_MID)
-
-        msg = struct.pack("!B", schc_residue)
+        msg = struct.pack("!B", schc_residue) # add SCHC header to the message
         msg += cbor.dumps(message)
 
         print ("length", len(msg), binascii.hexlify(msg))
 
         s.send(msg)
-        return None
+        return None # don't use downlink
 
     # for other technologies we wend a regular CoAP message
     coap = CoAP.Message()
     coap.new_header(type=CoAP.NON, code=CoAP.POST)
     coap.add_option (CoAP.Uri_path, uri_path)
     coap.add_option (CoAP.Content_format, CoAP.Content_format_CBOR)
-    coap.add_option (CoAP.No_Response, 0b00000010)
+    coap.add_option (CoAP.No_Response, 0b00000010) # block 2.xx notification
     coap.add_payload(cbor.dumps(message))
     coap.dump(hexa=True)
     answer = CoAP.send_ack(s, destination, coap)
@@ -186,12 +210,13 @@ def send_coap_message(sock, destination, uri_path, message):
     return answer
 
 if destination[0] == "SIGFOX":
-    coap_header_size = 1 # SCHC compression
+    coap_header_size = 1 # SCHC header size
 else:
-    coap_header_size = 25 # raw coap header with
+    coap_header_size = 25 #  coap header size approximated
 
 print ("MTU size is", MTU, "Payload size is", MTU-coap_header_size, "samples ", REPORT_PERIOD)
 
+# lets run it forever
 while True:
     t = int(get_temperature()*100)
     p = int(get_pressure()*100)
@@ -200,6 +225,10 @@ while True:
 
     print (t, p, h, m)
 
+    # if the array is empty store the value, otherwise store the delta
+
+    # for sigfox, we just measure temperature, other array will stay empty and
+    # never sent
     if len(temp_ts) == 0:
         temp_ts.append(t)
     else:
@@ -232,6 +261,9 @@ while True:
 
     answer = False
 
+    # if we exceed the MTU size, then remove the last item, send and generate
+    # a new list with the value we have removed. This is used mainly by SIGFOX
+    # since the MTU is too short to store 60 samples.
     if len(cbor.dumps(temp_ts)) > MTU-coap_header_size: # room for CoAP header
         answer = send_coap_message(s, destination, "temperature", temp_ts[:-1])
         temp_ts=[t]
@@ -247,6 +279,9 @@ while True:
     if len(cbor.dumps(memo_ts)) > MTU-coap_header_size:
         answer = send_coap_message(s, destination, "memory", memo_ts[:-1])
         memo_ts=[m]
+
+    # if the number of sample exceed the limit we defined, send the full
+    # array and start again with an empty one.
 
     if len(temp_ts) + temperature_offset > REPORT_PERIOD:
         answer = send_coap_message(s, destination, "temperature", temp_ts)
@@ -268,4 +303,4 @@ while True:
         memo_ts = []
         memory_offset = 0
 
-    time.sleep (60)
+    time.sleep (60) # wait for 1 minute.

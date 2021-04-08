@@ -12,6 +12,14 @@
 simple server. See the "Usage Examples" section in the aiocoap documentation
 for some more information."""
 
+""" This program receives POST from devices, direclty from Wi-Fi and through
+generic_coap_relay.py for LPWAN devices.
+
+It takes a CBOR coded Time Series and trandform it on a JSON structure for
+beebotte to display graphs. beebotte credentials are stored un config_bbt.py 
+file.
+"""
+
 import datetime
 import time
 import logging
@@ -27,22 +35,35 @@ import config_bbt #secret keys
 import beebotte
 
 
+# establish the context with beebotte.
+bbt = beebotte.BBT(config_bbt.API_KEY, config_bbt.SECRET_KEY) 
 
-bbt = beebotte.BBT(config_bbt.API_KEY, config_bbt.SECRET_KEY)
 
 def to_bbt(channel, res_name, msg, factor=1, period=10, epoch=None):
+    """This function takes a python array representing a time serie 
+    and transform it into a JSON structure expected by beebotte. 
+    - channel and res_name are names defined in the Beebotte account 
+    in the channel page
+    - msg is the data sent by the devices
+    - factor is the precision on the measure. for instance .01 divide
+    by 100 the value
+    - period is the interval between 2 measurement on the device.
+    - epoch can be set at the function call, but bu default the 
+    reception time is considered as the time of the last sample.
+     """
     global bbt
 
     prev_value = 0
     data_list = []
     if epoch:
         back_time = epoch
-    else:
+    else: # get current time as epoch
         back_time = time.mktime(datetime.datetime.now().timetuple())
     
-    back_time -= len(msg)*period
+    back_time -= len(msg)*period # go back in time to get the epoch of the 
+                                 # first sample
 
-    for e in msg:
+    for e in msg: # create the beebotte array
         prev_value += e
         
         back_time += period
@@ -53,9 +74,24 @@ def to_bbt(channel, res_name, msg, factor=1, period=10, epoch=None):
 
     pprint.pprint (data_list)
     
-    bbt.writeBulk(channel, data_list)
+    bbt.writeBulk(channel, data_list) # send it
+
+
+#
+
 
 class generic_sensor(resource.PathCapable):
+    """  this class is not used in this progamm, but kept because it is
+    hard to find this in the documentation of aiocoap. The goal of
+    PathCapable object is to process the rest of an URI.
+    for example, we can have something like:
+        /proxy/devEUI/humidity 
+    where devEUI is the sensor devEUI and can be viewed as a channel
+    by beebotte. the method add_resource has been setup with /proxy.
+    render method will not see the /proxy but will have the remaining
+    element in uri_path. Not that iit a render and the method should
+    be tested.
+    """
 
     async def render(self, request):
         print ("render", request.opt.uri_path)
@@ -80,15 +116,21 @@ class generic_sensor(resource.PathCapable):
 
     async def needs_blockwise_assembly(self, request):
         return False
+
+
+# Class to process data posted on /temperature.
         
 class temperature(resource.Resource):
     async def render_post(self, request):
 
-        ct = request.opt.content_format or \
+        # if no content_format option set the default value
+        ct = request.opt.content_format or \ 
                 aiocoap.numbers.media_types_rev['text/plain']
 
+        # text will just display the value
         if ct == aiocoap.numbers.media_types_rev['text/plain']:
             print ("text:", request.payload)
+        # cbor will be displayed and processed.
         elif ct == aiocoap.numbers.media_types_rev['application/cbor']:
             print ("cbor:", cbor.loads(request.payload))
             to_bbt("capteurs", "temperature", cbor.loads(request.payload), period=60, factor=0.01)
@@ -141,14 +183,16 @@ def main():
     # Resource tree creation
     root = resource.Site()
 
+    # add resource processing, /proxy is not used here, see comments in generic_sensor()
     root.add_resource(['temperature'], temperature())
     root.add_resource(['pressure'], pressure())
     root.add_resource(['humidity'], humidity())
     root.add_resource(['proxy'], generic_sensor())
     
-
+    # associate resource tree and socket
     asyncio.Task(aiocoap.Context.create_server_context(root))
 
+    # let's go forever
     asyncio.get_event_loop().run_forever()
 
 if __name__ == "__main__":
