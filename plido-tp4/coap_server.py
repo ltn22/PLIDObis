@@ -124,7 +124,7 @@ class temperature(resource.Resource):
     async def render_post(self, request):
 
         # if no content_format option set the default value
-        ct = request.opt.content_format or \ 
+        ct = request.opt.content_format or \
                 aiocoap.numbers.media_types_rev['text/plain']
 
         # text will just display the value
