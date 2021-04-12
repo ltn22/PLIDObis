@@ -21,7 +21,7 @@ node n8 {
 	cmdup=('mount -t tmpfs tmpfs /dev/shm', 'mount -a', )
 	}
     }
-    custom-image /usr/share/core/icons/normal/winden_ico.png
+    custom-image /home/ilab/PLIDO/tp-wireshark/winden_ico.png
 }
 
 node n6 {
@@ -47,7 +47,7 @@ node n6 {
 	cmdup=('mount -t tmpfs tmpfs /dev/shm', 'mount -a', )
 	}
     }
-    custom-image /usr/share/core/icons/normal/skull.png
+    custom-image /home/ilab/PLIDO/tp-wireshark/skull.png
 }
 
 link l7 {
