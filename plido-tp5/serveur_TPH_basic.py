@@ -202,7 +202,7 @@ def main():
     root.add_resource(['temperature'], temperature())
     root.add_resource(['pressure'], pressure())
     root.add_resource(['humidity'], humidity())
-    root.add_resource(['TPH'], humidity())
+    root.add_resource(['TPH'], TPH())
     root.add_resource(['proxy'], generic_sensor())
     
     # associate resource tree and socket
