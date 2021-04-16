@@ -179,10 +179,12 @@ class humidity(resource.Resource):
         return aiocoap.Message(code=aiocoap.CHANGED)
 
 class TPH(resource.Resource):
-    global collection # acces to the mongodb collection opened in main
 
 
     async def render_post(self, request):
+
+        global collection # acces to the mongodb collection opened in main
+
 
         ct = request.opt.content_format or \
                 aiocoap.numbers.media_types_rev['text/plain']
