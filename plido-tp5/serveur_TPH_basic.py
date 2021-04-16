@@ -34,6 +34,10 @@ import cbor2 as cbor
 import config_bbt #secret keys 
 import beebotte
 
+from pymongo import MongoClient
+
+collection = []
+
 
 # establish the context with beebotte.
 bbt = beebotte.BBT(config_bbt.API_KEY, config_bbt.SECRET_KEY) 
@@ -175,6 +179,9 @@ class humidity(resource.Resource):
         return aiocoap.Message(code=aiocoap.CHANGED)
 
 class TPH(resource.Resource):
+    global collection # acces to the mongodb collection opened in main
+
+
     async def render_post(self, request):
 
         ct = request.opt.content_format or \
@@ -185,7 +192,11 @@ class TPH(resource.Resource):
             return aiocoap.Message(code=aiocoap.UNSUPPORTED_MEDIA_TYPE)
 
         # Receiving TPH resource. 
-        print ("TPH:", cbor.loads(request.payload))
+        message = cbor.loads(request.payload)
+        print ("TPH:", message )
+
+        id = collection.insert_one({"measure": message}).inserted_id
+        print ("New record id: ", id)
  
         return aiocoap.Message(code=aiocoap.CHANGED)
 
@@ -195,6 +206,11 @@ class TPH(resource.Resource):
 #logging.getLogger("coap-server").setLevel(logging.DEBUG)
 
 def main():
+
+    client = MongoClient()
+    db = client ["meteo-data"]
+    collection = db["raw"]
+
     # Resource tree creation
     root = resource.Site()
 
