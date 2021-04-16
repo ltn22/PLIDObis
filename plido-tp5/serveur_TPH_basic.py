@@ -180,14 +180,13 @@ class TPH(resource.Resource):
         ct = request.opt.content_format or \
                 aiocoap.numbers.media_types_rev['text/plain']
 
-        if ct == aiocoap.numbers.media_types_rev['text/plain']:
-            print ("text:", request.payload)
-        elif ct == aiocoap.numbers.media_types_rev['application/cbor']:
-            print ("cbor:", cbor.loads(request.payload))
-
-        else:
+        if ct != aiocoap.numbers.media_types_rev['application/cbor']:
             print ("Unknown format")
             return aiocoap.Message(code=aiocoap.UNSUPPORTED_MEDIA_TYPE)
+
+        # Receiving TPH resource. 
+        print ("TPH:", cbor.loads(request.payload))
+ 
         return aiocoap.Message(code=aiocoap.CHANGED)
 
 # logging setup
