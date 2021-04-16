@@ -182,10 +182,6 @@ class TPH(resource.Resource):
 
 
     async def render_post(self, request):
-
-        global collection # acces to the mongodb collection opened in main
-
-
         ct = request.opt.content_format or \
                 aiocoap.numbers.media_types_rev['text/plain']
 
@@ -208,6 +204,7 @@ class TPH(resource.Resource):
 #logging.getLogger("coap-server").setLevel(logging.DEBUG)
 
 def main():
+    global collection 
 
     client = MongoClient()
     db = client ["meteo-data"]
