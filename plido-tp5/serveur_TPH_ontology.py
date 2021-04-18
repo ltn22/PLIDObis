@@ -214,6 +214,7 @@ class TPH(resource.Resource):
 
 def main():
     global collection 
+    global sensor_id
 
     client = MongoClient()
     db = client ["meteo-data"]
