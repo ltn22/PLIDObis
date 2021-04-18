@@ -78,8 +78,6 @@ class sensor_emulated:
         id = collection.insert_one(my_measure)
         print (my_measure)
  
-        return aiocoap.Message(code=aiocoap.CHANGED)
-
 # logging setup
 
 #logging.basicConfig(level=logging.INFO)
