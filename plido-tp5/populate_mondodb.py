@@ -54,7 +54,7 @@ class sensor_emulated:
             print (name, "do not exist in the database")
             self.sensor_id = collection.insert_one(my_sensor).inserted_id
 
-            print ("new id is ", sensor_id)
+            print ("new id is ", self.sensor_id)
         else:
             self.sensor_id = found_item["_id"]
             print (name, "already in database", self.sensor_id)
