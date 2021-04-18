@@ -104,7 +104,7 @@ def main():
               ("badc0ffee0ddf00d", "kitchen", 25, 10000, 50),
               ("ca11ab1eca55e77e", "office", 20, 10000, 40),
               ("5ca1ab1eb16b00b5", "bathroom", 27, 10000, 70)]:
-        pritn (e)
+        print (e)
         sensor = sensor_emulated (e)
     
     print (sensor_list)
