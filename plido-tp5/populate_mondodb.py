@@ -122,7 +122,7 @@ def main():
             s.store_measurement()
 
         print (".", end="")
-        time.sleep(60)
+        time.sleep(10)
 
 if __name__ == "__main__":
     main()
