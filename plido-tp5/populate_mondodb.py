@@ -25,7 +25,7 @@ import time
 import logging
 import binascii
 import pprint
-import virtual_sensor
+from virtual_sensor import virtual_sensor
 
 from pymongo import MongoClient
 
