@@ -112,7 +112,10 @@ def main():
 
     while True:
         for s in sensor_list:
-            s.
+            s.store_measurement()
+
+        print (".", end="")
+        time.sleep(60)
 
 
 
