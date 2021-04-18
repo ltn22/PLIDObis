@@ -37,6 +37,11 @@ class sensor_emulated:
         self.pressure    = virtual_sensor(start=p, variation = 1) 
         self.humidity    = virtual_sensor(start=h, variation = 3, min=20, max=80) 
 
+        self.mt = 0.0
+        self.mp = 0.0
+        self.mh = 0.0
+        self.nb_elm = 0
+
         my_sensor = {
             "@context": "http://user.ackl.io/schema/Sensor",
             "ThingID" : mac,
@@ -66,6 +71,14 @@ class sensor_emulated:
         h = self.humidity.read_value()
 
         print (t, p, h)
+
+        self.mt += t
+        self.mp += p
+        self.mh += h
+
+        print (self.mt/self.nb_elm, self.mp/self.nb_elm, self.mh/self.nb_elm,)
+
+
         my_measure = {
             "@context" : "http://user.ackl.io/schema/BME280",
             "Temperature" : t,
@@ -76,7 +89,6 @@ class sensor_emulated:
             }
         
         id = collection.insert_one(my_measure)
-        print (my_measure)
  
 # logging setup
 
@@ -106,8 +118,6 @@ def main():
         sensor = sensor_emulated (*e)
         sensor_list.append(sensor)
     
-    print (sensor_list)
-
     while True:
         for s in sensor_list:
             s.store_measurement()
