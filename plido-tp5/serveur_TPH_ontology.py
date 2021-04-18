@@ -228,7 +228,7 @@ def main():
     MY_SENSOR_ID = "70b3d5499XXXXXXX"
 
     my_sensor = {
-        "@context", "http://user.ackl.io/schema/Sensor",
+        "@context": "http://user.ackl.io/schema/Sensor",
         "ThingID" : MY_SENSOR_ID,
         "Name" : "Room 23",
         "Manufacturer" : "pycom LOPY4",
@@ -240,10 +240,10 @@ def main():
     # look if the device identified by name exists in the DB
 
     name = my_sensor["Name"]
-    found_item = measures.find_one ({"Name" : name })
+    found_item = collection.find_one ({"Name" : name })
     if found_item == None:
         print (name, "do not exist in the database")
-        sensor_id = measures.insert_one(my_sensor).inserted_id
+        sensor_id = collection.insert_one(my_sensor).inserted_id
 
         print ("new id is ", sensor_id)
     else:
