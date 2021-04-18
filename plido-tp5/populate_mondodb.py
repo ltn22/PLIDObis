@@ -52,18 +52,18 @@ class sensor_emulated:
         found_item = collection.find_one ({"Name" : name })
         if found_item == None:
             print (name, "do not exist in the database")
-            sensor_id = collection.insert_one(my_sensor).inserted_id
+            self.sensor_id = collection.insert_one(my_sensor).inserted_id
 
             print ("new id is ", sensor_id)
         else:
-            sensor_id = found_item["_id"]
-            print (name, "already in database", sensor_id)
+            self.sensor_id = found_item["_id"]
+            print (name, "already in database", self.sensor_id)
 
 
-    def store_measurement(self, request):
+    def store_measurement(self):
         t = self.temperature.read_value()
-        p = self.temperature.read_value()
-        h = self.temperature.read_value()
+        p = self.pressure.read_value()
+        h = self.humidity.read_value()
 
         print (t, p, h)
         my_measure = {
@@ -71,7 +71,7 @@ class sensor_emulated:
             "Temperature" : t,
             "Pression"    : p/10, 
             "Humiditity"  : h,
-            "SensorCharacteristics" : sensor_id,
+            "SensorCharacteristics" : self.sensor_id,
             "Date" : datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()
             }
         
@@ -109,6 +109,10 @@ def main():
         sensor_list.append(sensor)
     
     print (sensor_list)
+
+    while True:
+        for s in sensor_list:
+            s.
 
 
 
