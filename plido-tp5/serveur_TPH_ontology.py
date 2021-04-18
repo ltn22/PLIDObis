@@ -225,7 +225,7 @@ def main():
     # MUST be changed with your device characteristics
     #
 
-    MY_SENSOR_ID = "70b3d5499XXXXXXX"
+    MY_SENSOR_ID = "CHANGE_ME_TO_DEVID"
 
     my_sensor = {
         "@context": "http://user.ackl.io/schema/Sensor",
