@@ -75,6 +75,7 @@ class sensor_emulated:
         self.mt += t
         self.mp += p
         self.mh += h
+        self.nb_elm += 1
 
         print (self.mt/self.nb_elm, self.mp/self.nb_elm, self.mh/self.nb_elm,)
 
