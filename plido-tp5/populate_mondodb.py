@@ -70,8 +70,6 @@ class sensor_emulated:
         p = self.pressure.read_value()
         h = self.humidity.read_value()
 
-        print (t, p, h)
-
         self.mt += t
         self.mp += p
         self.mh += h
@@ -126,8 +124,5 @@ def main():
         print (".", end="")
         time.sleep(60)
 
-
-
- 
 if __name__ == "__main__":
     main()
