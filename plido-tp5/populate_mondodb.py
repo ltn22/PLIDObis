@@ -25,17 +25,18 @@ import time
 import logging
 import binascii
 import pprint
-from virtual_sensor import virtual_sensor
+import random
 
 from pymongo import MongoClient
 
 
 class sensor_emulated:
 
-    def __init__(self, mac, name, t, p, h):
-        self.temperature = virtual_sensor(start=t, variation = 0.1)
-        self.pressure    = virtual_sensor(start=p, variation = 1) 
-        self.humidity    = virtual_sensor(start=h, variation = 3, min=20, max=80) 
+    def __init__(self, mac, name, t_range, p_range, h_range):
+        self.t_min, t_max = t_range
+        self.p_min, p_max = p_range
+        self.h_min, h_max = h_range
+
 
         self.mt = 0.0
         self.mp = 0.0
@@ -66,9 +67,9 @@ class sensor_emulated:
 
 
     def store_measurement(self):
-        t = self.temperature.read_value()
-        p = self.pressure.read_value()
-        h = self.humidity.read_value()
+        t = random.uniform (self.t_min, self.t_max)
+        p = random.uniform (self.p_min, self.p_max)
+        h = random.uniform (self.h_min, self.h_max)
 
         self.mt += t
         self.mp += p
@@ -109,10 +110,10 @@ def main():
     #
 
     sensor_list = []
-    for e in [("0123456789abcde", "bedroom", 18, 10000, 30), 
-              ("badc0ffee0ddf00d", "kitchen", 25, 10000, 50),
-              ("ca11ab1eca55e77e", "office", 20, 10000, 40),
-              ("5ca1ab1eb16b00b5", "bathroom", 27, 10000, 70)]:
+    for e in [("0123456789abcde", "bedroom", (15, 20), (1000, 1200), (30, 50)), 
+              ("badc0ffee0ddf00d", "kitchen", (20, 25), (1000, 1200), (30, 60)),
+              ("ca11ab1eca55e77e", "office", (18, 25), (1000, 1200), (40, 70)),
+              ("5ca1ab1eb16b00b5", "bathroom", (18, 27), (1000, 1200) (30, 90))]:
         print (e)
         sensor = sensor_emulated (*e)
         sensor_list.append(sensor)
