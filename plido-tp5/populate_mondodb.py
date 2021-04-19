@@ -111,7 +111,6 @@ def main():
               ("badc0ffee0ddf00d", "kitchen", (20, 25), (1000, 1200), (30, 60)),
               ("ca11ab1eca55e77e", "office", (18, 25), (1000, 1200), (40, 70)),
               ("5ca1ab1eb16b00b5", "bathroom", (18, 27), (1000, 1200), (30, 90))]:
-        print (e)
         sensor = sensor_emulated (*e)
         sensor_list.append(sensor)
     
