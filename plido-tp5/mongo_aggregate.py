@@ -11,7 +11,7 @@ if found_item == None:
     raise ValueError ("{} not found".format(sensor_location))
 else:
     sensor_id = found_item["_id"]
-    
+
 print (sensor_id)
         
 res = measures.aggregate([{"$match" : {"SensorCharacteristics" : sensor_id }}])
