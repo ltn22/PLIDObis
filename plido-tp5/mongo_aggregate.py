@@ -6,7 +6,7 @@ measures = db.data
 
 sensor_location = "Room 23"
 
-found_item = measures.find_one ({"Name" : sensor_location })
+found_item = measures.find_one ({"Location" : sensor_location })
 if found_item == None:
     raise ValueError ("{} not found".format(sensor_location))
 else:
