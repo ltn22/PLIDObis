@@ -46,7 +46,7 @@ class sensor_emulated:
         my_sensor = {
             "@context": "http://user.ackl.io/schema/Sensor",
             "ThingID" : mac,
-            "Name" : "Room 23",
+            "Name" : name+mac,
             "Manufacturer" : "pycom LOPY4",
             "Link" : "LoRaWAN Acklio",
             "Location" : name,
@@ -55,7 +55,7 @@ class sensor_emulated:
 
         # look if the device identified by name exists in the DB
 
-        found_item = collection.find_one ({"Name" : name })
+        found_item = collection.find_one ({"Location" : name })
         if found_item == None:
             print (name, "do not exist in the database")
             self.sensor_id = collection.insert_one(my_sensor).inserted_id
