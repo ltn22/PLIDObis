@@ -33,9 +33,9 @@ from pymongo import MongoClient
 class sensor_emulated:
 
     def __init__(self, mac, name, t_range, p_range, h_range):
-        self.t_min, t_max = t_range
-        self.p_min, p_max = p_range
-        self.h_min, h_max = h_range
+        self.t_min, self.t_max = t_range
+        self.p_min, self.p_max = p_range
+        self.h_min, self.h_max = h_range
 
 
         self.mt = 0.0
