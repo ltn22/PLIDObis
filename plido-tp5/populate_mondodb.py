@@ -76,9 +76,6 @@ class sensor_emulated:
         self.mh += h
         self.nb_elm += 1
 
-        print (self.mt/self.nb_elm, self.mp/self.nb_elm, self.mh/self.nb_elm,)
-
-
         my_measure = {
             "@context" : "http://user.ackl.io/schema/BME280",
             "Temperature" : t,
@@ -123,7 +120,7 @@ def main():
             s.store_measurement()
 
         print (".", end="")
-        time.sleep(10)
+        time.sleep(60)
 
 if __name__ == "__main__":
     main()
