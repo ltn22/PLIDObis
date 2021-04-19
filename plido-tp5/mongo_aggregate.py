@@ -2,7 +2,7 @@ from pymongo import MongoClient
 
 client = MongoClient()
 db = client["meteo-data"]
-measures = db.data
+measures = db.measures
 
 sensor_location = "Room 23"
 
