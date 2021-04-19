@@ -2,11 +2,11 @@ from pymongo import MongoClient
 
 client = MongoClient()
 db = client["meteo-data"]
-measures = db.measures
+measure = db.measure
 
-sensor_location = "Room 23"
+sensor_location = "kitchen"
 
-found_item = measures.find_one ({"Location" : sensor_location })
+found_item = measure.find_one ({"Location" : sensor_location })
 if found_item == None:
     raise ValueError ("{} not found".format(sensor_location))
 else:
@@ -14,7 +14,7 @@ else:
 
 print (sensor_id)
         
-res = measures.aggregate([{"$match" : {"SensorCharacteristics" : sensor_id }}])
+res = measure.aggregate([{"$match" : {"SensorCharacteristics" : sensor_id }}])
 
 print (res)
 
