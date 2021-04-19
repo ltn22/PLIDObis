@@ -4,11 +4,11 @@ client = MongoClient()
 db = client["meteo-data"]
 measures = db.data
 
-pokemon = "Flingouste"
+sensor_location = "Room 23"
 
-found_item = measures.find_one ({"Name" : pokemon })
+found_item = measures.find_one ({"Name" : sensor_name })
 if found_item == None:
-    raise ValueError ("{} not found".format(pokemon))
+    raise ValueError ("{} not found".format(sensor_name))
 else:
     sensor_id = found_item["_id"]
     
