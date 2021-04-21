@@ -4,9 +4,6 @@ client = MongoClient()
 db = client["meteo-data"]
 measure = db.measure
 
-list_of_locations = measure.find({"@context": "http://user.ackl.io/schema/Sensor"})
-print (list_of_locations)
-
 sensor_location = "Room A123"
 
 found_item = measure.find_one ({"Location" : sensor_location })

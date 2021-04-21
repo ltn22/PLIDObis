@@ -196,8 +196,8 @@ class TPH(resource.Resource):
         my_measure = {
             "@context" : "http://user.ackl.io/schema/BME280",
             "Temperature" : message[0]/100,
-            "Pression"    : message[1]/10, 
-            "Humiditity"  : message[2]/100,
+            "Pressure"    : message[1]/10, 
+            "Humidity"    : message[2]/100,
             "SensorCharacteristics" : sensor_id,
             "Date" : datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()
             }
