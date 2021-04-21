@@ -234,7 +234,7 @@ def main():
         "Name" : "Room 23",
         "Manufacturer" : "pycom LOPY4",
         "Link" : "LoRaWAN Acklio",
-        "Location" : "Room A123",
+        "Location" : "Room 23",
         "Address" : MY_SENSOR_ID
         }
 
