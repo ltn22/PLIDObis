@@ -79,8 +79,8 @@ class sensor_emulated:
         my_measure = {
             "@context" : "http://user.ackl.io/schema/BME280",
             "Temperature" : t,
-            "Pression"    : p/10, 
-            "Humiditity"  : h,
+            "Pressure"    : p/10, 
+            "Humidity"  : h,
             "SensorCharacteristics" : self.sensor_id,
             "Date" : datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()
             }
