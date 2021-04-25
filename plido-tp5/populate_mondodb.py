@@ -25,17 +25,18 @@ import time
 import logging
 import binascii
 import pprint
-from virtual_sensor import virtual_sensor
+import random
 
 from pymongo import MongoClient
 
 
 class sensor_emulated:
 
-    def __init__(self, mac, name, t, p, h):
-        self.temperature = virtual_sensor(start=t, variation = 0.1)
-        self.pressure    = virtual_sensor(start=p, variation = 1) 
-        self.humidity    = virtual_sensor(start=h, variation = 3, min=20, max=80) 
+    def __init__(self, mac, name, t_range, p_range, h_range):
+        self.t_min, self.t_max = t_range
+        self.p_min, self.p_max = p_range
+        self.h_min, self.h_max = h_range
+
 
         self.mt = 0.0
         self.mp = 0.0
@@ -45,7 +46,7 @@ class sensor_emulated:
         my_sensor = {
             "@context": "http://user.ackl.io/schema/Sensor",
             "ThingID" : mac,
-            "Name" : "Room 23",
+            "Name" : name+mac,
             "Manufacturer" : "pycom LOPY4",
             "Link" : "LoRaWAN Acklio",
             "Location" : name,
@@ -54,7 +55,7 @@ class sensor_emulated:
 
         # look if the device identified by name exists in the DB
 
-        found_item = collection.find_one ({"Name" : name })
+        found_item = collection.find_one ({"Location" : name })
         if found_item == None:
             print (name, "do not exist in the database")
             self.sensor_id = collection.insert_one(my_sensor).inserted_id
@@ -66,23 +67,20 @@ class sensor_emulated:
 
 
     def store_measurement(self):
-        t = self.temperature.read_value()
-        p = self.pressure.read_value()
-        h = self.humidity.read_value()
+        t = random.uniform (self.t_min, self.t_max)
+        p = random.uniform (self.p_min, self.p_max)
+        h = random.uniform (self.h_min, self.h_max)
 
         self.mt += t
         self.mp += p
         self.mh += h
         self.nb_elm += 1
 
-        print (self.mt/self.nb_elm, self.mp/self.nb_elm, self.mh/self.nb_elm,)
-
-
         my_measure = {
             "@context" : "http://user.ackl.io/schema/BME280",
             "Temperature" : t,
-            "Pression"    : p/10, 
-            "Humiditity"  : h,
+            "Pressure"    : p/10, 
+            "Humidity"  : h,
             "SensorCharacteristics" : self.sensor_id,
             "Date" : datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()
             }
@@ -109,11 +107,10 @@ def main():
     #
 
     sensor_list = []
-    for e in [("0123456789abcde", "bedroom", 18, 10000, 30), 
-              ("badc0ffee0ddf00d", "kitchen", 25, 10000, 50),
-              ("ca11ab1eca55e77e", "office", 20, 10000, 40),
-              ("5ca1ab1eb16b00b5", "bathroom", 27, 10000, 70)]:
-        print (e)
+    for e in [("0123456789abcde", "bedroom", (15, 20), (1000, 1200), (30, 50)), 
+              ("badc0ffee0ddf00d", "kitchen", (20, 25), (1000, 1200), (30, 60)),
+              ("ca11ab1eca55e77e", "office", (18, 25), (1000, 1200), (40, 70)),
+              ("5ca1ab1eb16b00b5", "bathroom", (18, 27), (1000, 1200), (30, 90))]:
         sensor = sensor_emulated (*e)
         sensor_list.append(sensor)
     
@@ -122,7 +119,7 @@ def main():
             s.store_measurement()
 
         print (".", end="")
-        time.sleep(10)
+        time.sleep(60)
 
 if __name__ == "__main__":
     main()
