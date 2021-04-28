@@ -9,9 +9,10 @@ echo "deb http://repo.mongodb.org/apt/debian stretch/mongodb-org/4.4 main" | sud
 sudo apt-get update
 sudo apt-get install -y mongodb-org
 
+sudo apt install default-jre
 
 #sudo apt update
 sudo apt install python3-pip
-python3.9 -m pip install pymodbus termcolor flask requests cbor2 beebotte pymongo
+python3.9 -m pip install pymodbus termcolor flask requests cbor2 beebotte pymongo numpy matplotlib
 
 
