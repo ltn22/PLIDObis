@@ -1,3 +1,3 @@
 known_nets = {
-    'MON_WIFI': {'pwd': 'MOM_MOT_DE_PASSE'}
+    'RSM-B25': {'pwd': 'DF72F6CE24'}
 }

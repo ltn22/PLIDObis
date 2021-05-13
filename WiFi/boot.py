@@ -1,6 +1,8 @@
 import os
 import machine
-from wifi_conf import known_nets
+known_nets = {
+    'RSM-B25': {'pwd': 'DF72F6CE24'}
+}
 from  binascii import hexlify
 
 import pycom
