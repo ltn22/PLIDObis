@@ -64,7 +64,7 @@ ax[1].boxplot(y)
 y = [y]
 
 for idx in range(1, 4):
-    y_2 = []
+    y_2 = np.array([])
     for a in y:
         middle = len(a)
         y_2.append(a[:middle])
