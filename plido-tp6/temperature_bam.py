@@ -63,7 +63,7 @@ ax[1].boxplot(y)
 
 middle = len(y)//2
 y1 = y[:middle]
-y1 = y[middle:] 
+y2 = y[middle:] 
 ax[2].boxplot([y1, y2])
 
 
