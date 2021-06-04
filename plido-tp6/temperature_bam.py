@@ -57,14 +57,24 @@ for r in res:
 e = mdates.datestr2num(x)
 
 
-fig, ax = plt.subplots(1, 3)
+fig, ax = plt.subplots(1, 4)
 ax[0].plot_date(e, y, linestyle="solid")
 ax[1].boxplot(y)
 
-middle = len(y)//2
-y1 = y[:middle]
-y2 = y[middle:] 
-ax[2].boxplot([y1, y2])
+y = [y]
+
+for idx in range(1, 4):
+    y_2 = []
+    for a in y:
+        middle = len(a)
+        y_2.append(a[:middle])
+        y_2.applend(a[middle:])
+
+        print (y_2)
+
+    ax[idx].boxplot(y_2)
+    y = y_2
+
 
 
 plt.title("Sensor values in the last hour")
