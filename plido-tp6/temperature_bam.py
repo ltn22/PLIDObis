@@ -57,11 +57,11 @@ for r in res:
 e = mdates.datestr2num(x)
 
 
-fig, ax = plt.subplots()
-plt.plot_date(e, y, linestyle="solid")
+fig, ax = plt.subplots(1, 2)
+ax[0,Ø].plot_date(e, y, linestyle="solid")
 
 plt.title("Sensor values in the last hour")
-ax.fmt_xdata = mdates.DateFormatter('%m-%d %H:%M:%S')
+ax[0,0].fmt_xdata = mdates.DateFormatter('%m-%d %H:%M:%S')
 fig.autofmt_xdate()
 
 plt.show()
