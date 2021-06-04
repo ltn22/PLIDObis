@@ -10,7 +10,7 @@ measure = db.measure
 
 list_of_locations = measure.find({"@context": "http://user.ackl.io/schema/Sensor"})
 
-sensor_location = "Room A123"
+sensor_location = "Room 23"
 
 found_item = measure.find_one ({"Location" : sensor_location })
 if found_item == None:
