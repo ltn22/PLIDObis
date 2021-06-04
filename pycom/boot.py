@@ -1,6 +1,8 @@
 import os
 import machine
 from  binascii import hexlify
+from wifi_conf import known_nets
+
 
 import pycom
 pycom.pybytes_on_boot(False)
