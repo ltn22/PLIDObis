@@ -68,7 +68,7 @@ for idx in range(1, 4):
     for a in y:
         middle = len(a)
         y_2.append(a[:middle])
-        y_2.applend(a[middle:])
+        y_2.append(a[middle:])
 
         print (y_2)
 
