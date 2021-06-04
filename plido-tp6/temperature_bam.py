@@ -21,7 +21,7 @@ else:
 print (sensor_id)
 
 currentDate = datetime.datetime.utcnow()
-onedayAgo = currentDate - datetime.timedelta(seconds=3600*24)
+oneDayAgo = currentDate - datetime.timedelta(seconds=3600*24)
 
 print (oneDayAgo)
 print (oneDayAgo.isoformat())
