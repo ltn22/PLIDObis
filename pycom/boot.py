@@ -1,8 +1,5 @@
 import os
 import machine
-known_nets = {
-    'RSM-B25': {'pwd': 'DF72F6CE24'}
-}
 from  binascii import hexlify
 
 import pycom
