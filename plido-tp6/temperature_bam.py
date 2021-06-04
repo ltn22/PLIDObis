@@ -59,6 +59,8 @@ e = mdates.datestr2num(x)
 
 fig, ax = plt.subplots(1, 2)
 ax[0].plot_date(e, y, linestyle="solid")
+ax[1].box_plot(y)
+
 
 plt.title("Sensor values in the last hour")
 ax[0].fmt_xdata = mdates.DateFormatter('%m-%d %H:%M:%S')
