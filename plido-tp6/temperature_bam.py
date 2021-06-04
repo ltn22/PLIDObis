@@ -21,15 +21,15 @@ else:
 print (sensor_id)
 
 currentDate = datetime.datetime.utcnow()
-oneHourAgo = currentDate - datetime.timedelta(seconds=3600*24)
+onedayAgo = currentDate - datetime.timedelta(seconds=3600*24)
 
-print (oneHourAgo)
-print (oneHourAgo.isoformat())
+print (oneDayAgo)
+print (oneDayAgo.isoformat())
         
 res = measure.aggregate([
     {"$match":  { "$and" : [
                        {"SensorCharacteristics": sensor_id},
-                       {"Date": {"$gte" : oneHourAgo.isoformat()}}
+                       {"Date": {"$gte" : oneDayAgo.isoformat()}}
                            ]
                  }
     },
