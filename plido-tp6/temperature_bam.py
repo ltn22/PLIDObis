@@ -66,7 +66,7 @@ y = [y]
 for idx in range(1, 4):
     y_2 = np.array([])
     for a in y:
-        r = np.split(a, 2)
+        r = np.split(a, [len(a)//2]) # allow unequal arrays
         print (r)
         np.append(y_2, a)
         print (y_2)
