@@ -57,9 +57,9 @@ for r in res:
 e = mdates.datestr2num(x)
 
 
-fig, ax = plt.subplots(1, 5)
-ax[0].plot_date(e, y, linestyle="solid")
-ax[1].boxplot(y)
+fig, ax = plt.subplots(2, 5)
+ax[0,0].plot_date(e, y, linestyle="solid")
+ax[1, 0].boxplot(y)
 
 b = [r["y"]]
 
@@ -75,7 +75,7 @@ for idx in range(2, 5):
         b_2.append(r2)
         print (b_2)
 
-    ax[idx].boxplot(np.array(b_2, dtype=object))
+    ax[1, idx].boxplot(np.array(b_2, dtype=object))
     b = b_2
 
 
