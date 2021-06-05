@@ -66,10 +66,9 @@ y = [y]
 for idx in range(1, 4):
     y_2 = np.array([])
     for a in y:
-        middle = len(a)
-        y_2.append(a[:middle])
-        y_2.append(a[middle:])
-
+        r = np.split(a, 2)
+        print (r)
+        np.append(y_2, a)
         print (y_2)
 
     ax[idx].boxplot(y_2)
