@@ -69,7 +69,7 @@ for idx in range(1, 4):
     for a in y:
         r = np.split(a, [len(a)//2]) # allow unequal arrays
         print (r)
-        np.append(y_2, r)
+        np.append(y_2, r, dtype=object)
         print (y_2)
 
     ax[idx].boxplot(y_2)
