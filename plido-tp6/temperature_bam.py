@@ -63,7 +63,7 @@ ax[1].boxplot(y)
 
 b = [r["y"]]
 
-for idx in range(2, 4):
+for idx in range(2, 5):
     print ("*"*10, idx)
     b_2 = []
     for a in b:
