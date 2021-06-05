@@ -65,6 +65,8 @@ b = [r["y"]]
 
 for idx in range(1, 4):
     print ("*"*10, idx)
+    ax[idx].boxplot(np.array(b))
+
     b_2 = []
     for a in b:
         middle = len(a)//2
@@ -75,7 +77,6 @@ for idx in range(1, 4):
         b_2.append(r2)
         print (b_2)
 
-    ax[idx].boxplot(np.array(b_2))
     b = b_2
 
 
