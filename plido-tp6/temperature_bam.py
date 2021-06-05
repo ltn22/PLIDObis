@@ -64,6 +64,7 @@ ax[1].boxplot(y)
 y = [y]
 
 for idx in range(1, 4):
+    print ("*"*10, idx)
     y_2 = np.array([])
     for a in y:
         r = np.split(a, [len(a)//2]) # allow unequal arrays
