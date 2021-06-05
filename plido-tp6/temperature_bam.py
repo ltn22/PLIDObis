@@ -65,7 +65,7 @@ y = [y]
 
 for idx in range(1, 4):
     print ("*"*10, idx)
-    y_2 = np.array([])
+    y_2 = np.array([], dtype=object)
     for a in y:
         r = np.split(a, [len(a)//2]) # allow unequal arrays
         print (r)
