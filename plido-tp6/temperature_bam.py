@@ -61,19 +61,22 @@ fig, ax = plt.subplots(1, 4)
 ax[0].plot_date(e, y, linestyle="solid")
 ax[1].boxplot(y)
 
-y = [y]
+b = r["y"]
 
 for idx in range(1, 4):
     print ("*"*10, idx)
-    y_2 = np.array([], dtype=object)
-    for a in y:
-        r = np.split(a, [len(a)//2]) # allow unequal arrays
-        print (r)
-        np.append(y_2, r, dtype=object)
-        print (y_2)
+    b_2 = []
+    for a in b:
+        middle = len(a)//2
+        r1 = a[:middle]
+        r2 = a[middle:] 
+        print (r1, r2)
+        b_2.append(r1)
+        b_2.append(r2)
+        print (b_2)
 
-    ax[idx].boxplot(y_2)
-    y = y_2
+    ax[idx].boxplot(np.array(b_2))
+    b = b_2
 
 
 
