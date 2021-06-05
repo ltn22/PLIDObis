@@ -61,7 +61,7 @@ fig, ax = plt.subplots(1, 4)
 ax[0].plot_date(e, y, linestyle="solid")
 ax[1].boxplot(y)
 
-b = r["y"]
+b = [r["y"]]
 
 for idx in range(1, 4):
     print ("*"*10, idx)
