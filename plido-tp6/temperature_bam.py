@@ -81,7 +81,7 @@ for idx in range(2, 5):
 
 
 plt.title("Sensor values in the last hour")
-ax[0].fmt_xdata = mdates.DateFormatter('%m-%d %H:%M:%S')
+ax[0,0].fmt_xdata = mdates.DateFormatter('%m-%d %H:%M:%S')
 fig.autofmt_xdate()
 
 plt.show()
