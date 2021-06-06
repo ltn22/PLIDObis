@@ -56,6 +56,9 @@ for r in res:
 
 e = mdates.datestr2num(x)
 
+y_min = np.min(y)
+y_max = np.max(y)
+
 fig = plt.figure(figsize=(9, 4))
 grid = plt.GridSpec(4, 9, hspace=0.2, wspace=0.2)
 
