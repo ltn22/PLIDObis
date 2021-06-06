@@ -56,33 +56,47 @@ for r in res:
 
 e = mdates.datestr2num(x)
 
-plt.figure(1)
+fig = plt.figure(figsize=(6, 2))
+grid = plt.GridSpec(6, 2, hspace=0.2, wspace=0.2)
+curve = fig.add_subplot(grid[0, :])
+# y_hist = fig.add_subplot(grid[:-1, 0], xticklabels=[], sharey=main_ax)
+# x_hist = fig.add_subplot(grid[-1, 1:], yticklabels=[], sharex=main_ax)
 
-plt.subplot(1, 2, 1)
+# scatter points on the main axes
+# main_ax.plot(x, y, 'ok', markersize=3, alpha=0.2)
 
-plt.plot_date(e, y, linestyle="solid")
-plt.fmt_xdata = mdates.DateFormatter('%m-%d %H:%M:%S')
+# # histogram on the attached axes
+# x_hist.hist(x, 40, histtype='stepfilled',
+#             orientation='vertical', color='gray')
+# x_hist.invert_yaxis()
+
+# y_hist.hist(y, 40, histtype='stepfilled',
+#             orientation='horizontal', color='gray')
+# y_hist.invert_xaxis()
+
+curve.plot_date(e, y, linestyle="solid")
+curve.fmt_xdata = mdates.DateFormatter('%m-%d %H:%M:%S')
 
 
-plt.subplot(2, 2, 2)
-plt.boxplot(y)
+# plt.subplot(2, 2, 2)
+# plt.boxplot(y)
 
-b = [r["y"]]
+# b = [r["y"]]
 
-for idx in range(2, 5):
-    print ("*"*10, idx)
-    b_2 = []
-    for a in b:
-        middle = len(a)//2
-        r1 = a[:middle]
-        r2 = a[middle:] 
-        print (r1, r2)
-        b_2.append(r1)
-        b_2.append(r2)
-        print (b_2)
-    plt.subplot(2, 2, idx)
-    plt.boxplot(np.array(b_2, dtype=object))
-    b = b_2
+# for idx in range(2, 5):
+#     print ("*"*10, idx)
+#     b_2 = []
+#     for a in b:
+#         middle = len(a)//2
+#         r1 = a[:middle]
+#         r2 = a[middle:] 
+#         print (r1, r2)
+#         b_2.append(r1)
+#         b_2.append(r2)
+#         print (b_2)
+#     plt.subplot(2, 2, idx)
+#     plt.boxplot(np.array(b_2, dtype=object))
+#     b = b_2
 
 
 
