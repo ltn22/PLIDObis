@@ -59,10 +59,13 @@ e = mdates.datestr2num(x)
 y_min = np.min(y)
 y_max = np.max(y)
 
+print (y_min, y_max)
+
 fig = plt.figure(figsize=(9, 4))
 grid = plt.GridSpec(4, 9, hspace=0.2, wspace=0.2)
 
 curve = fig.add_subplot(grid[0, 0:-1])
+curve.ylim([y_min, y_max])
 curve.plot_date(e, y, linestyle="solid")
 curve.fmt_xdata = mdates.DateFormatter('%m-%d %H:%M:%S')
 
@@ -89,6 +92,7 @@ for idx in range(1, 4):
     for a in b_2:
         print (idx, nb_curves, block, pos)
         curve = fig.add_subplot(grid[idx,pos:pos+block])
+        curve.ylim([y_min, y_max])
         curve.plot(np.arange(0, len(a)), a)
         pos += block
 
