@@ -85,7 +85,7 @@ for idx in range(1, 2):
     pos = 0
     for a in b_2:
         print (nb_curves, block, pos)
-        curve = fig.add_subplot(grid[idx,pos:pos+block])
+        curve = fig.add_subplot(grid[idx,pos:pos+block-1])
         curve.plot(np.arange(0, len(a)), a)
         pos += block
 
