@@ -70,7 +70,7 @@ curve.plot_date(e, y, linestyle="solid")
 curve.fmt_xdata = mdates.DateFormatter('%m-%d %H:%M:%S')
 
 single_boxplot = curve = fig.add_subplot(grid[0, -1])
-single_boxplot.boxplot(y)
+single_boxplot.boxplot(y, showmeans=True)
 
 b = [r["y"]]
 
@@ -99,7 +99,7 @@ for idx in range(1, 4):
         pos += block
 
     multibox = fig.add_subplot(grid[idx, -1])
-    multibox.boxplot(np.array(b_2, dtype=object))
+    multibox.boxplot(np.array(b_2, dtype=object), showmeans=True) # array may not have the same size => dtype
     b = b_2
 
 
