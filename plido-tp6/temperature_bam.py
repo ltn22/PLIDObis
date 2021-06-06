@@ -68,7 +68,7 @@ single_boxplot.boxplot(y)
 
 b = [r["y"]]
 
-for idx in range(1, 2):
+for idx in range(1, 3):
     print ("*"*10, idx)
     b_2 = []
     for a in b: # split the array in two
