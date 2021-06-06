@@ -58,7 +58,7 @@ e = mdates.datestr2num(x)
 
 fig = plt.figure(figsize=(6, 2))
 grid = plt.GridSpec(6, 2, hspace=0.2, wspace=0.2)
-curve = fig.add_subplot(grid[0, :-1])
+curve = fig.add_subplot(grid[:-1, 0])
 # y_hist = fig.add_subplot(grid[:-1, 0], xticklabels=[], sharey=main_ax)
 # x_hist = fig.add_subplot(grid[-1, 1:], yticklabels=[], sharex=main_ax)
 
@@ -77,7 +77,7 @@ curve = fig.add_subplot(grid[0, :-1])
 curve.plot_date(e, y, linestyle="solid")
 curve.fmt_xdata = mdates.DateFormatter('%m-%d %H:%M:%S')
 
-single_boxplot = curve = fig.add_subplot(grid[0, -1])
+single_boxplot = curve = fig.add_subplot(grid[-1, 0])
 single_boxplot.boxplot(y)
 
 # b = [r["y"]]
