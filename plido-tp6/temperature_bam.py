@@ -58,7 +58,7 @@ e = mdates.datestr2num(x)
 
 
 fig, ax = plt.subplots(2, 5)
-ax[0,0].plot_date(e, y, linestyle="solid", colspan=3)
+ax[0,0].plot_date(e, y, linestyle="solid")
 ax[1, 0].boxplot(y)
 
 b = [r["y"]]
