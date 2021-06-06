@@ -78,7 +78,7 @@ for idx in range(2, 5):
         b_2.append(r1)
         b_2.append(r2)
         print (b_2)
-    plt.subplot(2, 2, i)
+    plt.subplot(2, 2, idx)
     plt.boxplot(np.array(b_2, dtype=object))
     b = b_2
 
