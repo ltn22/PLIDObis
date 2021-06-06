@@ -89,7 +89,7 @@ for idx in range(1, 4):
         curve.plot(np.arange(0, len(a)), a)
         pos += block
 
-    multibox = plt.add_subplot(grid[idx, -1])
+    multibox = fig.add_subplot(grid[idx, -1])
     multibox.boxplot(np.array(b_2, dtype=object))
     b = b_2
 
