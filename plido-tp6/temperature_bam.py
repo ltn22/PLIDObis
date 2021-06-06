@@ -93,6 +93,8 @@ for idx in range(1, 4):
         print (idx, nb_curves, block, pos)
         curve = fig.add_subplot(grid[idx,pos:pos+block])
         curve.set_ylim([y_min, y_max])
+        curve.axes.get_xaxis().set_visible(False)
+        curve.axes.get_yaxis().set_visible(False)
         curve.plot(np.arange(0, len(a)), a)
         pos += block
 
