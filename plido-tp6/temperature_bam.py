@@ -61,6 +61,8 @@ plt.figure(1)
 plt.subplot(1, 2, 1)
 
 plt.plot_date(e, y, linestyle="solid")
+plt.fmt_xdata = mdates.DateFormatter('%m-%d %H:%M:%S')
+
 
 plt.subplot(2, 2, 2)
 plt.boxplot(y)
@@ -84,9 +86,7 @@ for idx in range(2, 5):
 
 
 
-plt.title("Sensor values in the last hour")
-ax[0,0].fmt_xdata = mdates.DateFormatter('%m-%d %H:%M:%S')
-fig.autofmt_xdate()
+#plt.title("Sensor values in the last hour")
 
 plt.show()
 
