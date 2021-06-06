@@ -57,7 +57,7 @@ for r in res:
 e = mdates.datestr2num(x)
 
 fig = plt.figure(figsize=(9, 4))
-grid = plt.GridSpec(4, 6, hspace=0.2, wspace=0.2)
+grid = plt.GridSpec(4, 9, hspace=0.2, wspace=0.2)
 
 curve = fig.add_subplot(grid[0, 0:-1])
 curve.plot_date(e, y, linestyle="solid")
