@@ -57,7 +57,7 @@ for r in res:
 e = mdates.datestr2num(x)
 
 fig = plt.figure(figsize=(9, 4))
-grid = plt.GridSpec(2, 6, hspace=0.2, wspace=0.2)
+grid = plt.GridSpec(4, 6, hspace=0.2, wspace=0.2)
 
 curve = fig.add_subplot(grid[0, 0:-1])
 curve.plot_date(e, y, linestyle="solid")
@@ -84,7 +84,7 @@ for idx in range(1, 3):
     block = 8//nb_curves
     pos = 0
     for a in b_2:
-        print (nb_curves, block, pos)
+        print (idx, nb_curves, block, pos)
         curve = fig.add_subplot(grid[idx,pos:pos+block-1])
         curve.plot(np.arange(0, len(a)), a)
         pos += block
