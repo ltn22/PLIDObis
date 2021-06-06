@@ -56,10 +56,14 @@ for r in res:
 
 e = mdates.datestr2num(x)
 
+plt.figure(1)
 
-fig, ax = plt.subplots(2, 5)
-ax[0,0].plot_date(e, y, linestyle="solid")
-ax[1, 0].boxplot(y)
+plt.subplot(1, 2, 1)
+
+plt.plot_date(e, y, linestyle="solid")
+
+plt.subplot(2, 2, 2)
+plt.boxplot(y)
 
 b = [r["y"]]
 
@@ -74,8 +78,8 @@ for idx in range(2, 5):
         b_2.append(r1)
         b_2.append(r2)
         print (b_2)
-
-    ax[1, idx].boxplot(np.array(b_2, dtype=object))
+    plt.subplot(2, 2, i)
+    plt.boxplot(np.array(b_2, dtype=object))
     b = b_2
 
 
@@ -86,3 +90,10 @@ fig.autofmt_xdate()
 
 plt.show()
 
+# pyplot.figure(1)
+# pyplot.subplot(1, 2, 1)
+# pyplot.scatter(range(5), [x ** 2 for x in range(5)], color = 'blue')
+# pyplot.subplot(2, 2, 2)
+# pyplot.plot(range(5), color = 'red')
+# pyplot.subplot(2, 2, 4)
+# pyplot.bar(range(5), range(5), color = 'green')
