@@ -68,7 +68,7 @@ single_boxplot.boxplot(y)
 
 b = [r["y"]]
 
-for idx in range(1, 3):
+for idx in range(1, 4):
     print ("*"*10, idx)
     b_2 = []
     for a in b: # split the array in two
@@ -89,8 +89,8 @@ for idx in range(1, 3):
         curve.plot(np.arange(0, len(a)), a)
         pos += block
 
-
-    #plt.boxplot(np.array(b_2, dtype=object))
+    multibox = plt.add_subplot(grid[idx, -1])
+    multibox.boxplot(np.array(b_2, dtype=object))
     b = b_2
 
 
