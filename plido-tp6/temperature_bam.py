@@ -81,10 +81,12 @@ for idx in range(1, 2):
         print (b_2)
 
     nb_curves = len(b_2)
+    block = 8//nb_curves
     pos = 0
     for a in b_2:
-        curve = fig.add_subplot(grid[idx,pos:8//nb_curves])
+        curve = fig.add_subplot(grid[idx,pos:block])
         curve.plot(np.arange(0, len(a)), a)
+        pos += block
 
 
     #plt.boxplot(np.array(b_2, dtype=object))
