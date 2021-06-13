@@ -13,5 +13,5 @@ apt install -y default-jre
 #
 # Python3.5 will be used for emulated networks (modbus), Python3.9 will be used for IoT
 apt install -y python3-pip
-python3.9 -m pip install pymodbus termcolor twisted flask requests cbor2 beebotte kpn_senml pymongo numpy matplotlib
+python3.9 -m pip install pymodbus termcolor twisted flask requests cbor2 beebotte kpn_senml psutil pymongo numpy matplotlib
 python3 -m pip install pymodbus termcolor twisted
