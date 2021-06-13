@@ -38,13 +38,8 @@ res = measure.aggregate([
 
 
 for r in res:
-    print (r)
     x = np.array(r["x"])
     y = np.array(r["y"])
-
-    print (len(x))
-
-    print (len(y))
 
 e = mdates.datestr2num(x)
 

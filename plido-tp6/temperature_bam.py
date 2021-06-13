@@ -8,8 +8,6 @@ client = MongoClient()
 db = client["meteo-data"]
 measure = db.measure
 
-list_of_locations = measure.find({"@context": "http://user.ackl.io/schema/Sensor"})
-
 sensor_location = "Room 23"
 
 found_item = measure.find_one ({"Location" : sensor_location })
@@ -18,13 +16,8 @@ if found_item == None:
 else:
     sensor_id = found_item["_id"]
 
-print (sensor_id)
-
 currentDate = datetime.datetime.utcnow()
 oneDayAgo = currentDate - datetime.timedelta(seconds=3600*24)
-
-print (oneDayAgo)
-print (oneDayAgo.isoformat())
         
 res = measure.aggregate([
     {"$match":  { "$and" : [
@@ -43,16 +36,10 @@ res = measure.aggregate([
      }
 ])
 
-print (res)
 
 for r in res:
-    print (r)
     x = np.array(r["x"])
     y = np.array(r["y"])
-
-    print (len(x))
-
-    print (len(y))
 
 e = mdates.datestr2num(x)
 
@@ -73,7 +60,6 @@ single_boxplot.boxplot(y, showmeans=True)
 b = np.array_split(y, 6) # cut one hourinto 10 min arrays
 
 for idx in range(0, 6):
-    print (b[idx])
     curve = fig.add_subplot(grid[2, idx])
     curve.set_ylim([y_min, y_max])
     curve.axes.get_xaxis().set_visible(False)
