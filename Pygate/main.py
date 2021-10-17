@@ -1,17 +1,19 @@
 from network import WLAN
-#from network import ETH
 import time
 import socket
 import machine
 from machine import RTC
 import pycom
+import binascii
+import json
+
+from wifi_conf import known_nets
 
 print('\nStarting LoRaWAN concentrator')
+
 # Disable Hearbeat
 pycom.heartbeat(False)
-#192.168.4.1
-# 7e 47 40 00 63 c7 cd b6
-# Define callback function for Pygate events
+
 def machine_cb (arg):
     evt = machine.events()
     if (evt & machine.PYGATE_START_EVT):
@@ -27,32 +29,39 @@ def machine_cb (arg):
 # register callback function
 machine.callback(trigger = (machine.PYGATE_START_EVT | machine.PYGATE_STOP_EVT | machine.PYGATE_ERROR_EVT), handler=machine_cb)
 
+from network import WLAN
+wl = WLAN()
+wl.mode(WLAN.STA) # Try to connect to a wifi given is wifi_conf.py
 
-print('Connecting to WiFi...',  end='')
+print("Scanning for known wifi nets")
+available_nets = wl.scan()
+print (available_nets)
+nets = frozenset([e.ssid for e in available_nets])
 
-# Connect to a Wifi Network
-wlan = WLAN(mode=WLAN.STA)
-wlan.connect(ssid='lora', auth=(WLAN.WPA2, "Marinito"))
-#wlan.connect(ssid='chirppygate', auth=(WLAN.WPA2, "marino92"))
+known_nets_names = frozenset([key for key in known_nets])
+net_to_use = list(nets & known_nets_names)
+print ("net to use", net_to_use)
+try:
+    net_to_use = net_to_use[0]
+    net_properties = known_nets[net_to_use]
+    pwd = net_properties['pwd']
+    sec = [e.sec for e in available_nets if e.ssid == net_to_use][0]
+    if 'wlan_config' in net_properties:
+        wl.ifconfig(config=net_properties['wlan_config'])
+    wl.connect(net_to_use, (sec, pwd), timeout=10000)
+    while not wl.isconnected():
+        machine.idle() # save power while waiting
+    print("Connected to "+net_to_use+" with IP address: " + wl.ifconfig()[0])
 
-while not wlan.isconnected():
-    print('.', end='')
-    time.sleep(1)
-print(" OK")
+except Exception as e:
+    ssid = "PLIDO_"+str(hexlify(wl.mac()[0][4:]))[2:6]
+    wl = WLAN()
+    wl.init(mode=WLAN.AP,  ssid=ssid, auth=wl.auth(), antenna=WLAN.INT_ANT)
+    print("Failed to connect to any known network, going into AP mode")
+    print("To connect look for '{}' access point, key = '{}'".format(ssid, wl.auth()[1] ))
+    print (wl.mode())
 
-#eth = ETH()
 
-#eth.init()
-#print('Connecting to Ethernet...',  end='')
-#while not eth.isconnected():
-#    print('.', end='')
-#    time.sleep(1)
-#print(" OK")
-
-#print(eth.ifconfig())
-#print(socket.getaddrinfo("pycom.io", 80))
-
-# Sync time via NTP server for GW timestamps on Events
 print('Syncing RTC via ntp...', end='')
 rtc = RTC()
 rtc.ntp_sync(server="pool.ntp.org")
@@ -62,9 +71,21 @@ while not rtc.synced():
     time.sleep(.5)
 print(" OK\n")
 
+
+rgw_id = binascii.hexlify(machine.unique_id())
+rgw_id += b'0000' # Id is on 6 bytes, need 8
+print ("Your Gateway ID", rgw_id.decode())
+
+
 # Read the GW config file from Filesystem
-fp = open('/flash/config.json','r')
-buf = fp.read()
+with  open('/flash/config.json','r') as fp:
+    buf = fp.read()
+
+buf_json = json.loads(buf)
+buf_json["gateway_conf"]["gateway_ID"] = rgw_id.decode() # convert in ASCII
+buf = json.dumps(buf_json)
+
+time.sleep(10)
 
 # Start the Pygate
 machine.pygate_init(buf)
