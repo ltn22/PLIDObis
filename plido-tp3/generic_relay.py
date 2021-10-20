@@ -120,7 +120,10 @@ def get_from_ttn():
             "payload_raw": base64.b64encode(downlink).decode()     # Base64 encoded payload: [0x01, 0x02, 0x03, 0x04]
         }
         downlink_url = "https://eu1.cloud.thethings.network/api/v3/as/applications/" + \
-                        fromGW["end_device_ids"]["application_ids"]["application_id"]
+                        fromGW["end_device_ids"]["application_ids"]["application_id"] + \
+                        "/devices/" + \
+                        fromGW["end_device_ids"]["device_id"] + \
+                        "/down/push'
 
         print(downlink_url)
         print (downlink_msg)
