@@ -132,6 +132,7 @@ def get_from_ttn():
 
         print(downlink_url)
         print (downlink_msg)
+        print (headers)
         x = requests.post(downlink_url, data = json.dumps(downlink_msg), headers=headers)
 
         print(x) 
