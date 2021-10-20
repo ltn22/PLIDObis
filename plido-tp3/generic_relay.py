@@ -112,7 +112,7 @@ def get_from_ttn():
         payload = base64.b64decode(fromGW["uplink_message"]["frm_payload"])
         downlink = forward_data(payload)
 
-        downlink = int.to_byte(fromGW["uplink_message"]["f_cnt"], length=4, byteorder="big") # To Be remove just for tests
+        downlink = int.to_bytes(fromGW["uplink_message"]["f_cnt"], length=4, byteorder="big") # To Be remove just for tests
         if downlink != None:
             downlink_msg = {
                 "downlinks": [{
