@@ -112,7 +112,7 @@ def get_from_ttn():
         payload = base64.b64decode(fromGW["uplink_message"]["frm_payload"])
         downlink = forward_data(payload)
 
-    downlink = b"010203" # To Be remove just for tests
+    downlink = b"hello" # To Be remove just for tests
     if downlink != None:
         downlink_msg = {
             "f_port":   fromGW["uplink_message"]["f_port"],      # LoRaWAN FPort
