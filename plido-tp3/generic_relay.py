@@ -116,10 +116,9 @@ def get_from_ttn():
         if downlink != None:
             downlink_msg = {
                 "f_port":   fromGW["uplink_message"]["f_port"],      # LoRaWAN FPort
-    #            "confirmed": False,            # Whether the downlink should be confirmed by the device
                 "frm_payload": base64.b64encode(downlink).decode()     # Base64 encoded payload: [0x01, 0x02, 0x03, 0x04]
             }
-            downlink_url = "http://eu1.cloud.thethings.network/api/v3/as/applications/" + \
+            downlink_url = "https://eu1.cloud.thethings.network/api/v3/as/applications/" + \
                             fromGW["end_device_ids"]["application_ids"]["application_id"] + \
                             "/devices/" + \
                             fromGW["end_device_ids"]["device_id"] + \
