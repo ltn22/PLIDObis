@@ -65,7 +65,7 @@ def get_from_sigfox():
     print (resp)
     return resp                                    
 
-@app.route('/TTN', methods=['POST'])
+@app.route('/TTN', methods=['POST']) # API V2 obsolete
 def get_from_TTN():
     fromGW = request.get_json(force=True)
     pprint.pprint(fromGW)
@@ -91,7 +91,48 @@ def get_from_TTN():
     print (resp)
     return resp 
 
-@app.route('/lns', methods=['POST'])
+
+    #   "identifiers": [
+    # {
+    #   "device_ids": {
+    #     "device_id": "plido-lopy",
+    #     "application_ids": {
+    #       "application_id": "plido-measures"
+    #     }
+    #   }
+    # },
+
+@app.route('/ttn', methods=['POST']) # API V3 current
+def get_from_ttn():
+    fromGW = request.get_json(force=True)
+    pprint.pprint(fromGW)
+
+    downlink = None
+    if "uplink_message" in fromGW:
+        payload = base64.b64decode(fromGW["uplink_message"]["frm_payload"])
+        downlink = forward_data(payload)
+
+    downlink = True # To Be remove just for tests
+    if downlink != None:
+        downlink_msg = {
+            "port":   fromGW["uplink_message"]["f_port"],      # LoRaWAN FPort
+            "confirmed": False,            # Whether the downlink should be confirmed by the device
+            "payload_raw": base64.b64encode(downlink).decode()     # Base64 encoded payload: [0x01, 0x02, 0x03, 0x04]
+        }
+        downlink_url = "https://eu1.cloud.thethings.network/api/v3/as/applications/" + \
+                        fromGW["identifiers"][0]["device_ids"]["application_ids"]["application_id"]
+
+        print(downlink_url)
+        print (downlink_msg)
+        x = requests.post(downlink_url, data = json.dumps(downlink_msg))
+
+        print(x) 
+
+    resp = Response(status=200)
+    print (resp)
+    return resp 
+
+@app.route('/lns', methods=['POST']) 
 def get_from_acklio():
 
     fromGW = request.get_json(force=True)
