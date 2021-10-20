@@ -125,9 +125,14 @@ def get_from_ttn():
                         fromGW["end_device_ids"]["device_id"] + \
                         "/down/push"
 
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization' : 'Bearer NNSXS.I6Z3WEXITRJQBGEUFHFWDF3HOVB63KQIZ7XWMSQ.4SKQYTCLFMSN7X26LJYZEHGUYTPRYRB2OOIS72HFYP66LR6G6ZFQ'
+        }
+
         print(downlink_url)
         print (downlink_msg)
-        x = requests.post(downlink_url, data = json.dumps(downlink_msg))
+        x = requests.post(downlink_url, data = json.dumps(downlink_msg), headers=headers)
 
         print(x) 
 
