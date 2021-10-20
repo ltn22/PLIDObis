@@ -112,30 +112,30 @@ def get_from_ttn():
         payload = base64.b64decode(fromGW["uplink_message"]["frm_payload"])
         downlink = forward_data(payload)
 
-    downlink = b"hello" # To Be remove just for tests
-    if downlink != None:
-        downlink_msg = {
-            "f_port":   fromGW["uplink_message"]["f_port"],      # LoRaWAN FPort
-#            "confirmed": False,            # Whether the downlink should be confirmed by the device
-            "frm_payload": base64.b64encode(downlink).decode()     # Base64 encoded payload: [0x01, 0x02, 0x03, 0x04]
-        }
-        downlink_url = "https://eu1.cloud.thethings.network/api/v3/as/applications/" + \
-                        fromGW["end_device_ids"]["application_ids"]["application_id"] + \
-                        "/devices/" + \
-                        fromGW["end_device_ids"]["device_id"] + \
-                        "/down/push"
+        downlink = b"hello" # To Be remove just for tests
+        if downlink != None:
+            downlink_msg = {
+                "f_port":   fromGW["uplink_message"]["f_port"],      # LoRaWAN FPort
+    #            "confirmed": False,            # Whether the downlink should be confirmed by the device
+                "frm_payload": base64.b64encode(downlink).decode()     # Base64 encoded payload: [0x01, 0x02, 0x03, 0x04]
+            }
+            downlink_url = "https://eu1.cloud.thethings.network/api/v3/as/applications/" + \
+                            fromGW["end_device_ids"]["application_ids"]["application_id"] + \
+                            "/devices/" + \
+                            fromGW["end_device_ids"]["device_id"] + \
+                            "/down/push"
 
-        headers = {
-            'Content-Type': 'application/json',
-            'Authorization' : 'Bearer NNSXS.I6Z3WEXITRJQBGEUFHFWDF3HOVB63KQIZ7XWMSQ.4SKQYTCLFMSN7X26LJYZEHGUYTPRYRB2OOIS72HFYP66LR6G6ZFQ'
-        }
+            headers = {
+                'Content-Type': 'application/json',
+                'Authorization' : 'Bearer NNSXS.I6Z3WEXITRJQBGEUFHFWDF3HOVB63KQIZ7XWMSQ.4SKQYTCLFMSN7X26LJYZEHGUYTPRYRB2OOIS72HFYP66LR6G6ZFQB'
+            }
 
-        print(downlink_url)
-        print (downlink_msg)
-        print (headers)
-        x = requests.post(downlink_url, data = json.dumps(downlink_msg), headers=headers)
+            print(downlink_url)
+            print (downlink_msg)
+            print (headers)
+            x = requests.post(downlink_url, data = json.dumps(downlink_msg), headers=headers)
 
-        print(x) 
+            print(x) 
 
     resp = Response(status=200)
     print (resp)
