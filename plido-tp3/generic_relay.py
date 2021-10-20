@@ -127,7 +127,7 @@ def get_from_ttn():
 
             headers = {
                 'Content-Type': 'application/json',
-                'Authorization' : 'Bearer NNSXS.I6Z3WEXITRJQBGEUFHFWDF3HOVB63KQIZ7XWMSQ.4SKQYTCLFMSN7X26LJYZEHGUYTPRYRB2OOIS72HFYP66LR6G6ZFQB'
+                'Authorization' : 'Bearer NNSXS.I6Z3WEXITRJQBGEUFHFWDF3HOVB63KQIZ7XWMSQ.4SKQYTCLFMSN7X26LJYZEHGUYTPRYRB2OOIS72HFYP66LR6G6ZFQ'
             }
 
             print(downlink_url)
