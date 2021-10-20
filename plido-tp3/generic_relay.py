@@ -123,7 +123,7 @@ def get_from_ttn():
                         fromGW["end_device_ids"]["application_ids"]["application_id"] + \
                         "/devices/" + \
                         fromGW["end_device_ids"]["device_id"] + \
-                        "/down/push'
+                        "/down/push"
 
         print(downlink_url)
         print (downlink_msg)
