@@ -16,6 +16,8 @@ import base64
 
 import requests
 
+from ttn_config import TTN_Downlink_Key 
+
 app = Flask(__name__)
 app.debug = True
 
@@ -91,17 +93,6 @@ def get_from_TTN():
     print (resp)
     return resp 
 
-
-    #   "identifiers": [
-    # {
-    #   "device_ids": {
-    #     "device_id": "plido-lopy",
-    #     "application_ids": {
-    #       "application_id": "plido-measures"
-    #     }
-    #   }
-    # },
-
 @app.route('/ttn', methods=['POST']) # API V3 current
 def get_from_ttn():
     fromGW = request.get_json(force=True)
@@ -112,12 +103,11 @@ def get_from_ttn():
         payload = base64.b64decode(fromGW["uplink_message"]["frm_payload"])
         downlink = forward_data(payload)
 
-        downlink = int.to_bytes(fromGW["uplink_message"]["f_cnt"], length=4, byteorder="big") # To Be remove just for tests
         if downlink != None:
             downlink_msg = {
                 "downlinks": [{
-                    "f_port":   fromGW["uplink_message"]["f_port"],      # LoRaWAN FPort
-                    "frm_payload": base64.b64encode(downlink).decode()     # Base64 encoded payload: [0x01, 0x02, 0x03, 0x04]
+                    "f_port":   fromGW["uplink_message"]["f_port"],      
+                    "frm_payload": base64.b64encode(downlink).decode()   
                 }]}
             downlink_url = "https://eu1.cloud.thethings.network/api/v3/as/applications/" + \
                             fromGW["end_device_ids"]["application_ids"]["application_id"] + \
@@ -127,7 +117,7 @@ def get_from_ttn():
 
             headers = {
                 'Content-Type': 'application/json',
-                'Authorization' : 'Bearer NNSXS.I6Z3WEXITRJQBGEUFHFWDF3HOVB63KQIZ7XWMSQ.4SKQYTCLFMSN7X26LJYZEHGUYTPRYRB2OOIS72HFYP66LR6G6ZFQ'
+                'Authorization' : 'Bearer ' + TTN_Downlink_Key
             }
 
             print(downlink_url)
