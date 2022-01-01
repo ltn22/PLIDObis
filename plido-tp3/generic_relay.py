@@ -16,8 +16,6 @@ import base64
 
 import requests
 
-from ttn_config import TTN_Downlink_Key 
-
 app = Flask(__name__)
 app.debug = True
 
@@ -104,6 +102,8 @@ def get_from_ttn():
         downlink = forward_data(payload)
 
         if downlink != None:
+            from ttn_config import TTN_Downlink_Key 
+
             downlink_msg = {
                 "downlinks": [{
                     "f_port":   fromGW["uplink_message"]["f_port"],      
