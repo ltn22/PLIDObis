@@ -99,7 +99,6 @@ def get_from_ttn():
 
     downlink = None
     if "uplink_message" in fromGW:
-        from ttn_config import TTN_Downlink_Key
 
         payload = base64.b64decode(fromGW["uplink_message"]["frm_payload"])
         downlink = forward_data(payload)
@@ -107,6 +106,8 @@ def get_from_ttn():
         #downlink = b"downkink test"
 
         if downlink != None:
+            from ttn_config import TTN_Downlink_Key
+
             downlink_msg = {
                 "downlinks": [{
                     "f_port":   fromGW["uplink_message"]["f_port"],
