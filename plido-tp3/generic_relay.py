@@ -105,7 +105,6 @@ def get_from_ttn():
         #downlink = b"downkink test"
 
         if downlink != None:
-
             from ttn_config import TTN_Downlink_Key
 
             downlink_msg = {
