@@ -16,31 +16,30 @@ import base64
 
 import requests
 
-from ttn_config import TTN_Downlink_Key 
 
 app = Flask(__name__)
 app.debug = True
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-defPort = 9999
+
 
 def forward_data(payload):
-    global verbose
+    global verbose, forward_port, forward_address
 
     inputs = [sock]
     outputs = []
 
     if verbose:
         print ("--UP->", binascii.hexlify(payload))
-    sock.sendto(payload, ("127.0.0.1", 33033))
+    sock.sendto(payload, (forward_address, forward_port))
 
     readable, writable, exceptional = select.select(inputs, outputs, inputs, 0.1)
 
     if readable == []:
         if verbose:
             print ("no DW")
-        return None   
+        return None
 
     for s in readable:
             replyStr = s.recv(1000)
@@ -65,7 +64,7 @@ def get_from_sigfox():
 
     resp = Response(status=200)
     print (resp)
-    return resp                                    
+    return resp
 
 @app.route('/TTN', methods=['POST']) # API V2 obsolete
 def get_from_TTN():
@@ -87,11 +86,11 @@ def get_from_TTN():
         print (downlink_msg)
         x = requests.post(fromGW["downlink_url"], data = json.dumps(downlink_msg))
 
-        print(x) 
+        print(x)
 
     resp = Response(status=200)
     print (resp)
-    return resp 
+    return resp
 
 @app.route('/ttn', methods=['POST']) # API V3 current
 def get_from_ttn():
@@ -103,11 +102,16 @@ def get_from_ttn():
         payload = base64.b64decode(fromGW["uplink_message"]["frm_payload"])
         downlink = forward_data(payload)
 
+        #downlink = b"downkink test"
+
         if downlink != None:
+
+            from ttn_config import TTN_Downlink_Key
+
             downlink_msg = {
                 "downlinks": [{
-                    "f_port":   fromGW["uplink_message"]["f_port"],      
-                    "frm_payload": base64.b64encode(downlink).decode()   
+                    "f_port":   fromGW["uplink_message"]["f_port"],
+                    "frm_payload": base64.b64encode(downlink).decode()
                 }]}
             downlink_url = "https://eu1.cloud.thethings.network/api/v3/as/applications/" + \
                             fromGW["end_device_ids"]["application_ids"]["application_id"] + \
@@ -125,13 +129,13 @@ def get_from_ttn():
             print (headers)
             x = requests.post(downlink_url, data = json.dumps(downlink_msg), headers=headers)
 
-            print(x) 
+            print(x)
 
     resp = Response(status=200)
     print (resp)
-    return resp 
+    return resp
 
-@app.route('/lns', methods=['POST']) 
+@app.route('/lns', methods=['POST'])
 def get_from_acklio():
 
     fromGW = request.get_json(force=True)
@@ -149,8 +153,8 @@ def get_from_acklio():
             "devEUI": fromGW["devEUI"],
             "data"  : base64.b64encode(downlink).decode('utf-8')
         }
-        resp = Response(response=json.dumps(answer), 
-                        status=200, 
+        resp = Response(response=json.dumps(answer),
+                        status=200,
                         mimetype="application/json")
     return resp
 
@@ -186,21 +190,29 @@ def get_from_chirpstack():
         print (headers)
         x = requests.post(downlink_url, data = json.dumps(answer), headers=headers)
 
-        print(x) 
+        print(x)
 
 
-    resp = Response(status=200)         
+    resp = Response(status=200)
     return resp
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-v", "--verbose", 
+parser.add_argument("-v", "--verbose",
                     action="store_true",
                     help="show uplink and downlink messages")
+parser.add_argument('--http_port',  default=9999,
+                    help="set http port for POST requests")
+parser.add_argument('--forward_port',  default=33033,
+                    help="port to forward packets")
+parser.add_argument('--forward_address',  default='127.0.0.1',
+                    help="IP address to forward packets")
 
 args = parser.parse_args()
 verbose = args.verbose
-
+defPort = args.http_port
+forward_port = args.forward_port
+forward_address = args.forward_address
 
 app.run(host="0.0.0.0", port=defPort)
 
