@@ -20,9 +20,9 @@ coap.add_payload(cbor.dumps(23.5))
 coap.dump(hexa=True)
 
 answer = CoAP.send_ack(s, destination, coap)
-if answer != None:
+if answer is not None:
     answer.dump()
 else:
     answer = CoAP.get_msg(s)
-    if answer != None:
+    if answer is not None:
         answer.dump()
