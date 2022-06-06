@@ -127,7 +127,7 @@ def get_from_acklio():
         payload = base64.b64decode(fromGW["data"])
         downlink = forward_data(payload)
 
-    if downlink == None:
+    if downlink is None:
         resp = Response(status=200)
     else:
         answer = {

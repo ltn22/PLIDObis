@@ -66,7 +66,7 @@ class SenmlRecord(SenmlBase):
         checks if the type of value is allowed for senml
         :return: None, raisee exception if not ok.
         '''
-        if (not value == None):
+        if value is not None:
             if not (isinstance(value, bool) or isinstance(value, int) or
                     isinstance(value, float) or isinstance(value, bytearray) or
                     isinstance(value, str)):
@@ -77,7 +77,7 @@ class SenmlRecord(SenmlBase):
         checks if the type of value is allowed for senml
         :return: None, raisee exception if not ok.
         '''
-        if (not value == None):
+        if value is not None:
             if not (isinstance(value, int) or isinstance(value, float)):
                 raise Exception("invalid type for " + field_name + ", only numbers allowed")
 
