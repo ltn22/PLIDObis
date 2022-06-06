@@ -101,7 +101,7 @@ def get_from_TTN():
         payload = base64.b64decode(fromGW["payload_raw"])
         downlink = forward_data(payload)
 
-    if downlink != None:
+    if downlink is not None:
         downlink_msg = {
             "dev_id": fromGW["dev_id"],    # The device ID
             "port":   fromGW["port"],      # LoRaWAN FPort
@@ -154,7 +154,7 @@ def get_from_chirpstack():
         downlink = forward_data(payload)
 
         print (fromGW["fPort"])
-    if downlink != None:
+    if downlink is not None:
         answer = {
             "deviceQueueItem": {
 		            "data": base64.b64encode(downlink).decode('utf-8'),
