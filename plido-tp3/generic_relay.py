@@ -203,7 +203,10 @@ parser.add_argument('--forward_address',  default='127.0.0.1',
 args = parser.parse_args()
 verbose = args.verbose
 defPort = args.http_port
-forward_port = args.forward_port
+if defPort == 9999:
+    forward_port = args.forward_port
+else: 
+    forward_port = defPort+5683
 forward_address = args.forward_address
 
 app.run(host="0.0.0.0", port=defPort)
