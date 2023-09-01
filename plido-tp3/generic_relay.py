@@ -177,15 +177,15 @@ def get_from_chirpstack():
         pprint.pprint (answer)
         device = binascii.hexlify(base64.b64decode(fromGW["devEUI"])).decode()
         downlink_url = "http://" + ip_LNS +':8080/api/devices/'+device+'/queue'
-        print (downlink_url)
+        #print (downlink_url)
         headers = {
             "content-type": "application/json",
             "grpc-metadata-authorization" : "Bearer "+ secret.key
         }
-        print (headers)
+        #print (headers)
         x = requests.post(downlink_url, data = json.dumps(answer), headers=headers)
 
-        print(x)
+        #print(x)
 
 
     resp = Response(status=200)
