@@ -7,7 +7,7 @@ measure = db.measure
 sensor_location = "Room A123"
 
 found_item = measure.find_one ({"Location" : sensor_location })
-if found_item == None:
+if found_item is None:
     raise ValueError ("{} not found".format(sensor_location))
 else:
     sensor_id = found_item["_id"]

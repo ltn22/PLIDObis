@@ -56,7 +56,7 @@ class sensor_emulated:
         # look if the device identified by name exists in the DB
 
         found_item = collection.find_one ({"Location" : name })
-        if found_item == None:
+        if found_item is None:
             print (name, "do not exist in the database")
             self.sensor_id = collection.insert_one(my_sensor).inserted_id
 

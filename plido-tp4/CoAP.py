@@ -60,7 +60,7 @@ class Message:
 
         global default_mid
 
-        if mid == None:
+        if mid is None:
             mid = default_mid
             default_mid = ( default_mid + 1 ) % ( 1 << midSize )
             if ( default_mid == 0 ): default_mid = 1  # mid = 0 may be ack with a random number
@@ -125,7 +125,7 @@ class Message:
         if opt < self.option:
             raise ValueError("Option number {} is not increasing".format(value))
 
-        if value == None:
+        if value is None:
             self.__add_option_TL (opt, 0)
         elif type(value) == str:
             self.__add_option_TL (opt, len(value))

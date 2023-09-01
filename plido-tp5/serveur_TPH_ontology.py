@@ -242,7 +242,7 @@ def main():
 
     name = my_sensor["Name"]
     found_item = collection.find_one ({"Name" : name })
-    if found_item == None:
+    if found_item is None:
         print (name, "do not exist in the database")
         sensor_id = collection.insert_one(my_sensor).inserted_id
 
