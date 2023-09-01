@@ -17,7 +17,7 @@ args = parser.parse_args()
 verbose = args.verbose
 defPort = int(args.http_port)
 if defPort == 9999:
-    forward_port = args.forward_port
+    forward_port = 33033
 else: #if a port is specified, the loopback port is also change
     forward_port = defPort+5683
 forward_address = args.forward_address
