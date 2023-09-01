@@ -120,8 +120,8 @@ def get_from_ttn():
                 'Authorization' : 'Bearer ' + TTN_Downlink_Key
             }
 
-            x = requests.post(downlink_url, 
-                                data = json.dumps(downlink_msg), 
+            x = requests.post(downlink_url,
+                                data = json.dumps(downlink_msg),
                                 headers=headers)
 
     resp = Response(status=200)
@@ -155,7 +155,10 @@ def get_from_chirpstack():
     import chirpstack_secrets as secret
 
     fromGW = request.get_json(force=True)
-    print (request.environ.get('REMOTE_PORT'))
+    if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
+        print( {'ip': request.environ['REMOTE_ADDR']})
+    else:
+        print({'ip': request.environ['HTTP_X_FORWARDED_FOR']})
     pprint.pprint (fromGW)
 
     downlink = None
@@ -205,11 +208,8 @@ verbose = args.verbose
 defPort = args.http_port
 if defPort == 9999:
     forward_port = args.forward_port
-else: 
+else:
     forward_port = defPort+5683
 forward_address = args.forward_address
 
 app.run(host="0.0.0.0", port=defPort)
-
-
-
