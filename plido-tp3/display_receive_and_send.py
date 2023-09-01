@@ -14,11 +14,11 @@ parser.add_argument('--forward_address',  default='127.0.0.1',
 
 args = parser.parse_args()
 verbose = args.verbose
-defPort = args.http_port
+defPort = int(args.http_port)
 if defPort == 9999:
     forward_port = args.forward_port
 else: #if a port is specified, the loopback port is also change
-    forward_port = defPort+5683    
+    forward_port = defPort+5683
 forward_address = args.forward_address
 
 
