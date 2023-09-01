@@ -156,9 +156,9 @@ def get_from_chirpstack():
 
     fromGW = request.get_json(force=True)
     if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
-        print( {'ip': request.environ['REMOTE_ADDR']})
+        ip_LNS = request.environ['REMOTE_ADDR']
     else:
-        print({'ip': request.environ['HTTP_X_FORWARDED_FOR']})
+        ip_LNS =  request.environ['HTTP_X_FORWARDED_FOR']
     pprint.pprint (fromGW)
 
     downlink = None
@@ -176,7 +176,7 @@ def get_from_chirpstack():
         }
         pprint.pprint (answer)
         device = binascii.hexlify(base64.b64decode(fromGW["devEUI"])).decode()
-        downlink_url = secret.server+'/api/devices/'+device+'/queue'
+        downlink_url = "http://" ip_LNS +'/api/devices/'+device+'/queue'
         print (downlink_url)
         headers = {
             "content-type": "application/json",
