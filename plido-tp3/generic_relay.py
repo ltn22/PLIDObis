@@ -176,7 +176,7 @@ def get_from_chirpstack():
         }
         pprint.pprint (answer)
         device = binascii.hexlify(base64.b64decode(fromGW["devEUI"])).decode()
-        downlink_url = "http://" + ip_LNS +'/api/devices/'+device+'/queue'
+        downlink_url = "http://" + ip_LNS +':8080/api/devices/'+device+'/queue'
         print (downlink_url)
         headers = {
             "content-type": "application/json",
