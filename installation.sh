@@ -2,13 +2,10 @@
 #
 
 rm -f /etc/apt/source.list
-echo "deb [trusted=yes] https://deb.debian.org/debian buster main contrib non-fr
-ee" > /etc/apt/sources.list
-echo "deb [trusted=yes] https://deb.debian.org/debian buster-backports main cont
-rib non-free" >> /etc/apt/sources.list
-echo "deb [trusted=yes] file:///usr/share/core-repository ./" >> /etc/apt/source
-s.list
-sudo apt update --fix-missing --allow-unauthenticated
+echo "deb [trusted=yes] https://deb.debian.org/debian buster main contrib non-free" > /etc/apt/sources.list
+echo "deb [trusted=yes] https://deb.debian.org/debian buster-backports main contrib non-free" >> /etc/apt/sources.list
+echo "deb [trusted=yes] file:///usr/share/core-repository ./" >> /etc/apt/sources.list
+apt update --fix-missing --allow-unauthenticated
 
 # install mongodb
 wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add -
