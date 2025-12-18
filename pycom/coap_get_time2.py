@@ -1,7 +1,7 @@
 import CoAP
 import socket
 
-SERVER = "192.168.1.XX" # change to your server's IP address
+SERVER = "192.168.11.109" # change to your server's IP address
 PORT   = 5683
 
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

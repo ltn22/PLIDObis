@@ -24,7 +24,7 @@ import aiocoap
 class TimeResource(resource.Resource):
 
     async def render_get(self, request):
-        await asyncio.sleep(5)
+        # await asyncio.sleep(5)
 
         payload = datetime.datetime.now().\
                 strftime("%Y-%m-%d %H:%M").encode('ascii')
@@ -35,7 +35,7 @@ class TimeResource(resource.Resource):
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("coap-server").setLevel(logging.DEBUG)
 
-def main():
+async def main():
     # Resource tree creation
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
         s.connect(("8.8.8.8", 80)) # connect outside to get local IP address
@@ -48,11 +48,13 @@ def main():
 
     root.add_resource(['time'], TimeResource())
 
-    asyncio.Task(
-        aiocoap.Context.create_server_context(root, 
-                                    bind=(ip_addr, port)))
 
-    asyncio.get_event_loop().run_forever()
+    await aiocoap.Context.create_server_context(root,bind=(ip_addr, port)) 
+
+    await asyncio.Future()  # run forever
 
 if __name__ == "__main__":
-    main()
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("\nServer stopped by user") #graceful exit on Ctrl+C
