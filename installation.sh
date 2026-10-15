@@ -6,8 +6,8 @@ echo "deb http://repo.mongodb.org/apt/debian stretch/mongodb-org/4.4 main" | tee
 apt-get update
 apt-get install -y mongodb-org
 apt-get install -y ntp
-wget https://ci.eclipse.org/leshan/job/leshan/lastSuccessfulBuild/artifact/leshan-client-demo.jar -P lwm2m
-wget https://ci.eclipse.org/leshan/job/leshan/lastSuccessfulBuild/artifact/leshan-server-demo.jar -P lwm2m
+wget https://download.eclipse.org/leshan/2.x/lastSuccessfulBuild/artifact/leshan-demo-client.jar -P lwm2m
+wget https://download.eclipse.org/leshan/2.x/lastSuccessfulBuild/artifact/leshan-demo-server.jar -P lwm2m
 # Java
 apt install -y default-jre
 #
